@@ -17,6 +17,8 @@ class Economico:
             
         plt.rcParams["font.size"] = 22
         
+        self.arquivo = open("./Saídas/relatório.txt", "w")
+        
     def phi(self, consumo): #Preço do kWh
         if(self.sem_beneficio): return consumo * 0.60530
         if(consumo <= 30): return consumo * 0.20553
@@ -48,7 +50,7 @@ class Economico:
         
         return r
     
-    def plotar_graficos(self):
+    def gerar_resultados(self):
         t = np.arange(0, 26, 1)
         foto = self.rendimento_fotovoltaico(t)
         poup = self.rendimento_poupanca(t)
@@ -67,10 +69,17 @@ class Economico:
         
         plt.savefig("./Saídas/rendimento.png")
         
-        print("Rendimento Final Poupança: R$ %f" %(poup[-1]))
-        print("Redimento Final sistema: R$ %f" %(foto[-1]))
+        self.arquivo.write("%s\n" %(str(self.projeto)))
+        self.arquivo.write("==============================================\n")
+        self.arquivo.write("Rendimento Final Poupança: R$ %f\n" %(poup[-1]))
+        self.arquivo.write("Redimento Final sistema: R$ %f\n" %(foto[-1]))
         
         for i in range(len(foto)):
             if(foto[i] > self.projeto.dados["custo"]):
-                print("Payback: %d anos" %(t[i]))
+                self.arquivo.write("Payback: %d anos\n" %(t[i]))
                 break
+            
+ 
+    def __del__(self):
+        self.arquivo.close()
+        

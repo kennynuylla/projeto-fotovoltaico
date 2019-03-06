@@ -1,0 +1,9 @@
+Custo: R$ 39265.0000
+66 x Placas: Painel Solar BYD Solar - 0.27 - https://www.minhacasasolar.com.br/produto/painel-solar-270w-byd-solar-byd270p6c-30-79345
+Inversor: Microinversor Apsystem - 0.5- https://www.minhacasasolar.com.br/produto/microinversor-grid-tie-0-5kw-apsystems-sem-monitoramento-yc500a-220v-79194
+Potência Instalada: 17.8200
+
+==============================================
+Rendimento Final Poupança: R$ 12606.896336
+Redimento Final sistema: R$ 292771.287564
+Payback: 3 anos

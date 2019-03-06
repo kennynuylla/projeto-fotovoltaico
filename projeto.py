@@ -11,7 +11,7 @@ class Projeto:
         self.tempo = tempo
         self.rendimento = rendimento
         self.equipamentos = equipamentos.Equipamentos()
-        self.dados = []
+        self.dados = {}
         
         if(self.ligacao == 1):
             self.consumo_minimo = 30
@@ -25,35 +25,57 @@ class Projeto:
         self.projeto = {}
         self.dimensionar_projeto()
     
+    def __str__(self):
+        retorno = "Custo: R$ %.04f\n" %(self.dados["custo"])
+        retorno += "%d x Placas: %s\n" %(self.dados["qtd_placas"], self.dados["placa"])
+        retorno += "Inversor: %s\n" %(self.dados["inversor"])
+        retorno += "Potência Instalada: %.04f\n" %(self.dados["potencia_instalada"])
+        
+        return retorno
+    
     def dimensionar_projeto(self):        
         energia_dia = (self.consumo_central - self.consumo_minimo)/30
         potencia_total = energia_dia/(self.tempo * self.rendimento)
         
-        total = {}
+        placa, inversor, custo, qtd_placas = self.melhores_equipamentos(potencia_total)
+        id_placa, potencia_placa, nome_placa, preco_placa, loja_placa = placa
+        id_inversor, potencia_inversor, nome_inversor, preco_inversor, loja_inversor = inversor
+        
+        self.dados["custo"] = custo
+        self.dados["placa"] = nome_placa + " - " + str(potencia_placa) + " - " + loja_placa
+        self.dados["inversor"] = nome_inversor + " - " + str(potencia_inversor) + "- " + loja_inversor
+        self.dados["qtd_placas"] = qtd_placas
+        self.dados["potencia_instalada"] = qtd_placas * potencia_placa
+        self.dados["custo_inversor"] = preco_inversor
+        
+    def melhores_equipamentos(self, potencia_total): #Sinta-se livre para mudar o algoritmo ou inserir IA aqui
         custo = None
+        melhor_placa = None
+        melhor_inversor = None
+        qtd_placas = None
         
         for placa in self.equipamentos.placas:
             for inversor in self.equipamentos.inversores:
-                id_placa, potencia_placa, nome_placa, preco_placa, loja_placa = placa
-                id_inversor, potencia_inversor, nome_inversor, preco_inversor, loja_inversor = inversor
+                potencia_placa = placa[1]
+                preco_placa = placa[3]
+                potencia_inversor = inversor[1]
+                preco_inversor = inversor[3]
                 
                 qtd_placas = np.ceil(potencia_total/potencia_placa)
-                nova_potencia_total = qtd_placas * potencia_placa
-                novo_custo = qtd_placas * preco_placa
+                potencia_total = qtd_placas * potencia_placa
+                novo_custo = qtd_placas*preco_placa + preco_inversor
                 
-                if(potencia_inversor < 0.8*nova_potencia_total or potencia_inversor > 1.2*nova_potencia_total):
+                if(potencia_total < 0.8*potencia_total or potencia_total > 1.2*potencia_total):
                     continue
                 
-                if(total == {} or custo == None or novo_custo < custo):
+                if(custo == None or novo_custo < custo):
                     custo = novo_custo
-                    total["custo"] = custo
-                    total["placa"] = nome_placa + " - " + str(potencia_placa) + " - " + loja_placa
-                    total["inversor"] = nome_inversor + " - " + str(potencia_inversor) + "- " + loja_inversor
-                    total["qtd_placas"] = qtd_placas
-                    total["potencia_instalada"] = nova_potencia_total
-                    total["custo_inversor"] = preco_inversor
+                    melhor_placa = placa
+                    melhor_inversor = inversor
         
-        self.dados = total
+        return [melhor_placa, melhor_inversor, custo, qtd_placas]
+        
+
                 
                 
         
