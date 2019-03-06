@@ -52,7 +52,7 @@ class Projeto:
         custo = None
         melhor_placa = None
         melhor_inversor = None
-        qtd_placas = None
+        melhor_qtd_placas = None
         
         for placa in self.equipamentos.placas:
             for inversor in self.equipamentos.inversores:
@@ -62,18 +62,19 @@ class Projeto:
                 preco_inversor = inversor[3]
                 
                 qtd_placas = np.ceil(potencia_total/potencia_placa)
-                potencia_total = qtd_placas * potencia_placa
+                nova_potencia_total = qtd_placas * potencia_placa
                 novo_custo = qtd_placas*preco_placa + preco_inversor
                 
-                if(potencia_total < 0.8*potencia_total or potencia_total > 1.2*potencia_total):
+                if(potencia_total < 0.8*nova_potencia_total or nova_potencia_total > 1.2*potencia_total):
                     continue
                 
                 if(custo == None or novo_custo < custo):
                     custo = novo_custo
                     melhor_placa = placa
                     melhor_inversor = inversor
+                    melhor_qtd_placas = qtd_placas
         
-        return [melhor_placa, melhor_inversor, custo, qtd_placas]
+        return [melhor_placa, melhor_inversor, custo, melhor_qtd_placas]
         
 
                 

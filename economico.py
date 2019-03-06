@@ -35,18 +35,18 @@ class Economico:
         return 0.2
     
     def rendimento_foto(self, t):
-        r = 12*t*self.phi(self.e(t) * self.projeto.consumo_central - self.projeto.consumo_minimo)
-        r += t*self.desconto_iptu*self.iptu
+        f = 0.0375 #Inflação em 2018
         
-        if(t%10 == 0 and t != 0):
-            r -= self.projeto.dados["custo_inversor"]
+        r = 12*t*self.phi(self.e(t) * (self.projeto.consumo_central - self.projeto.consumo_minimo))
+        r += t*self.desconto_iptu*self.iptu
+        r -= t//10 * self.projeto.dados["custo_inversor"]
+        r *= (1-f)**t
         
         return r
     
     def rendimento_poup(self, t):
         i = 1.12/100 #Rendimento Real em 2018
         r = self.projeto.dados["custo"] * (1+i)**t
-        r -= self.projeto.dados["custo"]
         
         return r
     
