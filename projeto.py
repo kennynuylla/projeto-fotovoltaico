@@ -2,7 +2,7 @@ import numpy as np, equipamentos
 
 class Projeto:
 
-    def __init__(self, ligacao, consumo_central, tempo, rendimento):
+    def __init__(self, ligacao, consumo_central, tempo, rendimento, iptu):
         #Consumo central é o consumo médio ou mediano da unidade consumidora
         #Ligação = 1 para monofásico, 2 para bifásico e 3 para trifásico
 
@@ -10,8 +10,15 @@ class Projeto:
         self.ligacao = ligacao
         self.tempo = tempo
         self.rendimento = rendimento
-        self.equipamentos = equipamentos.Equipamentos()
+        self.equipamentos = equipamentos.Equipamentos(380)
+        self.e = lambda t: rendimento - 0.008*t
+        self.iptu = iptu
         self.dados = {}
+        
+
+        self.dados_geracao = []
+        self.dados_e = []
+        self.t = np.arange(0,26,1)
         
         if(self.ligacao == 1):
             self.consumo_minimo = 30
@@ -22,59 +29,66 @@ class Projeto:
         else:
             self.consumo_minimo = 100
         
-        self.projeto = {}
         self.dimensionar_projeto()
+        self.obter_dados_geracao()
+
+        self.iaes = self.dados["potencia_instalada"]*0.8*5.54*30/self.consumo_central
     
     def __str__(self):
         retorno = "Custo: R$ %.04f\n" %(self.dados["custo"])
-        retorno += "%d x Placas: %s\n" %(self.dados["qtd_placas"], self.dados["placa"])
-        retorno += "Inversor: %s\n" %(self.dados["inversor"])
+        retorno += "Kit: %s\n" %(self.dados["kit"]) 
+        retorno += "Código: %s\n" %(self.dados["codigo"])
+        retorno += "Potência Placa: %.04f\n" %(self.dados["potencia_placa"])
         retorno += "Potência Instalada: %.04f\n" %(self.dados["potencia_instalada"])
+        retorno += "Potência Total: %.04f\n" %(self.dados["potencia_total"])
         
         return retorno
+
+    def __repr__(self):
+        return self.__str__()
     
     def dimensionar_projeto(self):        
         energia_dia = (self.consumo_central - self.consumo_minimo)/30
         potencia_total = energia_dia/(self.tempo * self.rendimento)
+        self.dados["potencia_total"] = potencia_total
         
-        placa, inversor, custo, qtd_placas = self.melhores_equipamentos(potencia_total)
-        id_placa, potencia_placa, nome_placa, preco_placa, loja_placa = placa
-        id_inversor, potencia_inversor, nome_inversor, preco_inversor, loja_inversor = inversor
-        
-        self.dados["custo"] = custo
-        self.dados["placa"] = nome_placa + " - " + str(potencia_placa) + " - " + loja_placa
-        self.dados["inversor"] = nome_inversor + " - " + str(potencia_inversor) + "- " + loja_inversor
-        self.dados["qtd_placas"] = qtd_placas
-        self.dados["potencia_instalada"] = qtd_placas * potencia_placa
-        self.dados["custo_inversor"] = preco_inversor
+        kit = self.melhores_equipamentos(potencia_total)
+        _, nome, potencia_placa, potencia_instalada, preco, link, _, codigo = kit
+
+        self.dados["custo"] = (preco + 1000) * 1.2075
+        self.dados["kit"] = nome
+        self.dados["link"] = link
+        self.dados["potencia_instalada"] = potencia_instalada
+        self.dados["potencia_placa"] = potencia_placa
+        self.dados["codigo"] = codigo
+        self.dados["custo_inversor"] = preco * 0.2
         
     def melhores_equipamentos(self, potencia_total): #Sinta-se livre para mudar o algoritmo ou inserir IA aqui
         custo = None
-        melhor_placa = None
-        melhor_inversor = None
-        melhor_qtd_placas = None
+        melhor_kit = None
         
-        for placa in self.equipamentos.placas:
-            for inversor in self.equipamentos.inversores:
-                potencia_placa = placa[1]
-                preco_placa = placa[3]
-                potencia_inversor = inversor[1]
-                preco_inversor = inversor[3]
+        for kit in self.equipamentos.kits:
+            preco = kit[4]
+            nova_potencia_total = kit[3]
                 
-                qtd_placas = np.ceil(potencia_total/potencia_placa)
-                nova_potencia_total = qtd_placas * potencia_placa
-                novo_custo = qtd_placas*preco_placa + preco_inversor
+            if(potencia_total < 0.8*nova_potencia_total or nova_potencia_total > 1.2*potencia_total):
+                continue
                 
-                if(potencia_total < 0.8*nova_potencia_total or nova_potencia_total > 1.2*potencia_total):
-                    continue
-                
-                if(custo == None or novo_custo < custo):
-                    custo = novo_custo
-                    melhor_placa = placa
-                    melhor_inversor = inversor
-                    melhor_qtd_placas = qtd_placas
+            if(custo == None or preco < custo):
+                custo = preco
+                melhor_kit = kit
+
         
-        return [melhor_placa, melhor_inversor, custo, melhor_qtd_placas]
+        return melhor_kit
+    
+    def obter_dados_geracao(self):
+        geracao = lambda t: self.e(t)*self.dados["potencia_instalada"]*self.tempo*30
+        geracao_vec = np.vectorize(geracao)
+        e_vec = np.vectorize(self.e)
+        self.dados_geracao = geracao_vec(self.t)
+        self.dados_e = e_vec(self.t)
+
+    
         
 
                 

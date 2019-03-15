@@ -1,9 +1,9 @@
-Custo: R$ 38127.0000
-64 x Placas: Painel Solar BYD Solar - 0.27 - https://www.minhacasasolar.com.br/produto/painel-solar-270w-byd-solar-byd270p6c-30-79345
-Inversor: Microinversor Apsystem - 0.5- https://www.minhacasasolar.com.br/produto/microinversor-grid-tie-0-5kw-apsystems-sem-monitoramento-yc500a-220v-79194
-Potência Instalada: 17.2800
+.:DADOS
+=>Custo Inicial: 83243.84
+=>Kit: GERADOR DE ENERGIA FRONIUS FINAME/MDA ALDO SOLAR
 
-==============================================
-Rendimento Final Poupança: R$ 50368.516276
-Redimento Final sistema: R$ 111692.630025
-Payback: 4 anos
+
+.:DADOS FINANCEIROS=>Quantidade de Parcelas: 60
+=>Valor de Cada Parcela: 2248.97
+=>Total Pago: 134938.20
+=>Payback: 11 anos

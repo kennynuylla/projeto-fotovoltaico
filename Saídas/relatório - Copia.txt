@@ -1,0 +1,9 @@
+.:DADOS
+=>Custo Inicial: 83243.84
+=>Kit: GERADOR DE ENERGIA FRONIUS FINAME/MDA ALDO SOLAR
+
+
+.:DADOS FINANCEIROS=>Quantidade de Parcelas: 1
+=>Valor de Cada Parcela: 83243.84
+=>Total Pago: 83243.84
+=>Payback: 4 anos
