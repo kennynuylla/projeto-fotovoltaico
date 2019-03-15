@@ -55,7 +55,7 @@ class Projeto:
         kit = self.melhores_equipamentos(potencia_total)
         _, nome, potencia_placa, potencia_instalada, preco, link, _, codigo = kit
 
-        self.dados["custo"] = (preco + 1000) * 1.2075
+        self.dados["custo"] = (preco + 1000) * 1.365
         self.dados["kit"] = nome
         self.dados["link"] = link
         self.dados["potencia_instalada"] = potencia_instalada

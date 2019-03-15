@@ -1,5 +1,5 @@
 .:DADOS
-=>Custo Inicial: 83243.84
+=>Custo Inicial: 94101.74
 =>Kit: GERADOR DE ENERGIA FRONIUS FINAME/MDA ALDO SOLAR
 
 
