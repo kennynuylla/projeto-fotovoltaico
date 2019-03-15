@@ -70,11 +70,15 @@ class Saidas:
 
         self.arquivo.write(".:DADOS\n")
         self.arquivo.write("=>Custo Inicial: %.02f\n" %(self.projeto.dados["custo"]))
-        self.arquivo.write("=>Kit: %s\n\n" %(self.projeto.dados["kit"]))
+        self.arquivo.write("=>Kit: %s-%.02f@%.02f\n\n" %(self.projeto.dados["kit"], self.projeto.dados["potencia_placa"],
+                self.projeto.dados["potencia_instalada"]))
+        self.arquivo.write("=>Link: %s\n" %(self.projeto.dados["link"]))
         self.arquivo.write(".:DADOS FINANCEIROS")
         self.arquivo.write("=>Quantidade de Parcelas: %d\n" %(self.economico.qtd_parcelas))
         self.arquivo.write("=>Valor de Cada Parcela: %.02f\n" %(self.economico.valor_parcela))
         self.arquivo.write("=>Total Pago: %.02f\n" %(self.economico.valor_inicial))
+        self.arquivo.write("=>Rendimento Poupança: %.02f\n" %(self.economico.valor_poupanca[-1]))
+        self.arquivo.write("=>Rendimento Fotovoltaico: %.02f\n" %(self.economico.valor_completo[-1]))
 
         for i in range(len(self.economico.t)):
             if(self.economico.valor_completo[i] >= 0):
