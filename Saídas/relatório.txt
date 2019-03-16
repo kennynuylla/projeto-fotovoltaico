@@ -5,8 +5,8 @@
 
 =>Link: https://www.aldo.com.br/Produto/?c=43001&d=gerador-de-energia-fronius-finame/mda-aldo-solar-GEF
 .:DADOS FINANCEIROS=>Quantidade de Parcelas: 60
-=>Valor de Cada Parcela: 2248.97
-=>Total Pago: 134938.20
+=>Valor de Cada Parcela: 2541.16
+=>Total Pago: 152469.60
 =>Rendimento Poupança: 124315.18
-=>Rendimento Fotovoltaico: 233174.05
-=>Payback: 11 anos
+=>Rendimento Fotovoltaico: 264586.12
+=>Payback: 8 anos

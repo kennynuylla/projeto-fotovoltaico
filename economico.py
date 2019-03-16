@@ -60,8 +60,8 @@ class Economico:
         """
 
         self.qtd_parcelas = 60
-        self.valor_parcela = 2248.97
-        self.valor_inicial = self.qtd_parcelas*self.valor_parcela
+        self.valor_parcela = 2541.16
+        self.valor_inicial = self.projeto.dados["custo"]
 
 
     def retorno_simples(self):

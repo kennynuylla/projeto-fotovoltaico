@@ -76,7 +76,7 @@ class Saidas:
         self.arquivo.write(".:DADOS FINANCEIROS")
         self.arquivo.write("=>Quantidade de Parcelas: %d\n" %(self.economico.qtd_parcelas))
         self.arquivo.write("=>Valor de Cada Parcela: %.02f\n" %(self.economico.valor_parcela))
-        self.arquivo.write("=>Total Pago: %.02f\n" %(self.economico.valor_inicial))
+        self.arquivo.write("=>Total Pago: %.02f\n" %(self.economico.qtd_parcelas * self.economico.valor_parcela))
         self.arquivo.write("=>Rendimento Poupança: %.02f\n" %(self.economico.valor_poupanca[-1]))
         self.arquivo.write("=>Rendimento Fotovoltaico: %.02f\n" %(self.economico.valor_completo[-1]))
 
